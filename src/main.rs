@@ -4,10 +4,23 @@
 use core::panic::PanicInfo; // Creating our own panic implementation now that there is no STD LIB
 
 
+ // Printing to screen
+ static HELLO: &[u8] = b"Hello World! I am Felix-OS :-)";
+
 /*We need to ovewrite the _start entry point to the program
  Main wont work since we have no runtime*/
  #[no_mangle] // disable name mangling to ensure that the Rust compiler really outputs a function with the name _start
  pub extern "C" fn _start()->!{
+    let vga_buffer = 0xb8000 as *mut u8;
+
+    for (i, &byte) in HELLO.iter().enumerate() {
+        unsafe {
+            *vga_buffer.offset(i as isize * 2) = byte;
+            *vga_buffer.offset(i as isize * 2 + 1) = 0xb;
+        }
+    }
+
+
     loop{}
  }
 
@@ -35,3 +48,4 @@ This ensures that all used memory is freed and allows the parent thread to catch
 We should disable unwinding and intead abort on panic. Bare metal so... no libs
 This is done on the toml file
 */
+

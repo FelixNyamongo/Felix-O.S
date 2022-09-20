@@ -1,0 +1,7 @@
+[toolchain]
+channel = "nightly"
+
+# Added this after the build-std version failed Thanks to Uncle scientist
+# Ran this afterward.
+# rustup component add rust-src --toolchain nightly-x86_64-pc-windows-msvc
+# Got it from the command line
